@@ -1,0 +1,22 @@
+<main class="post-page">
+  <a routerLink="/">Volver al inicio</a>
+
+  <h1>Post detalle</h1>
+  <p class="endpoint">GET https://jsonplaceholder.typicode.com/posts/1</p>
+
+  @if (facade.vm().loading) {
+    <p>Cargando...</p>
+  }
+
+  @if (facade.vm().error; as error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  @if (facade.vm().post; as post) {
+    <article>
+      <h2>#{{ post.id }} - {{ post.title }}</h2>
+      <p>{{ post.body }}</p>
+      <small>Autor: {{ post.userId }}</small>
+    </article>
+  }
+</main>

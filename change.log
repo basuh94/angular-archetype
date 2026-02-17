@@ -1,0 +1,276 @@
+# Change Log
+
+## 2026-02-11 - Semana 1 (Base de calidad y flujo)
+
+### 1) Integración continua (CI)
+- Se agregó workflow de GitHub Actions en `.github/workflows/ci.yml`.
+- Disparadores:
+  - `pull_request`
+  - `push` a `main` y `master`
+- Pasos del pipeline:
+  - `npm ci`
+  - `npm run lint`
+  - `npm test -- --runInBand`
+  - `npm run build`
+
+### 2) Pre-commit optimizado
+- Se actualizó `.husky/pre-commit` para usar:
+  - `npx lint-staged`
+  - `npm run test:related`
+- Objetivo: reducir tiempo de commit y mantener validación útil.
+
+### 3) Tests relacionados (nuevo script)
+- Se creó `scripts/test-related.sh`.
+- Lógica:
+  - Detecta archivos `.ts` staged con `git diff --cached`.
+  - Si no hay `.ts`, omite tests y no bloquea commit.
+  - Si hay `.ts`, ejecuta `jest --findRelatedTests --bail --passWithNoTests`.
+- Se añadió script npm `test:related` en `package.json`.
+
+### 4) Lint staged más preciso
+- En `package.json` (`lint-staged`):
+  - Antes: `ng lint --fix`
+  - Ahora: `eslint --fix --max-warnings=0`
+- Objetivo: aplicar lint/fix sobre archivos staged sin barrido global del proyecto.
+
+### 5) Estandarización de entorno
+- Se agregó `.nvmrc` con `20.19.0`.
+- Se agregó `engines` en `package.json`:
+  - `node >=20.19.0`
+  - `npm >=10`
+- Objetivo: evitar diferencias entre máquinas/CI.
+
+### 6) Documentación
+- Se actualizó `README.md` con:
+  - Nuevo script `npm run test:related`
+  - Requisitos de entorno (Node/npm)
+
+## Impacto en el flujo de trabajo
+- Local:
+  - Commits más rápidos (solo staged + tests relacionados)
+- Remoto (PR / main):
+  - Validación completa automática por CI
+
+## Validación realizada
+- `npm run lint`: OK
+- `npm test -- --runInBand`: OK
+- `npm run test:related`: OK
+- Nota: `npm run build` en este entorno local falló por restricción de sandbox (`EPERM` en bind de `::1`), no por error funcional del proyecto.
+
+## 2026-02-11 - Semana 2 (Calidad automática)
+
+### 1) Umbral de cobertura activado
+- Se actualizó `jest.config.js` para exigir cobertura global mínima:
+  - `statements: 60`
+  - `branches: 60`
+  - `functions: 60`
+  - `lines: 60`
+- Alcance de cobertura aplicado a `src/app/**/*.ts`, excluyendo archivos boilerplate de configuración/rutas.
+
+### 2) Scripts de validación unificados
+- Se añadieron scripts en `package.json`:
+  - `test:coverage`: ejecuta Jest con cobertura.
+  - `check`: ejecuta validación completa (`lint` + `test:coverage` + `build`).
+- Objetivo: tener un comando único de verificación local y CI.
+
+### 3) CI adaptado a `check`
+- Se actualizó `.github/workflows/ci.yml`:
+  - Reemplazo de pasos sueltos por `npm run check`.
+  - Publicación del artefacto de cobertura con `actions/upload-artifact@v4` (`coverage-report`).
+
+### 4) Documentación de política de calidad
+- Se actualizó `README.md`:
+  - Scripts nuevos (`test:coverage`, `check`).
+  - Política de cobertura mínima.
+  - Nota de reporte de cobertura en CI.
+
+## Impacto en el flujo de trabajo (Semana 2)
+- Local:
+  - Comando único `npm run check` para validar antes de abrir PR.
+- Remoto:
+  - CI valida en un solo paso y conserva reporte de cobertura para revisión.
+
+## Validación realizada (Semana 2)
+- `npm run lint`: OK
+- `npm run test:coverage`: OK (umbral 60% cumplido)
+- `npm run check`: llega hasta `build`; en este entorno local falla en build por restricción de sandbox (`EPERM` en bind de `::1`).
+
+## 2026-02-11 - Semana 4 (Observabilidad y robustez)
+
+### 1) Logger estructurado
+- Se agregó `src/app/core/logging/logger.service.ts`.
+- Niveles soportados: `debug`, `info`, `warn`, `error`.
+- Nivel mínimo configurable mediante token `LOGGER_MIN_LEVEL`.
+
+### 2) Manejo global de errores en cliente
+- Se agregó `src/app/core/errors/global-error-handler.service.ts`.
+- Se registró en `src/app/app.config.ts` como `ErrorHandler` global.
+
+### 3) Normalización de errores HTTP
+- Se agregaron:
+  - `src/app/core/errors/api-error.model.ts`
+  - `src/app/core/errors/http-error.mapper.ts`
+- El interceptor HTTP ahora transforma `HttpErrorResponse` a `ApiError` y registra contexto de request/response.
+
+### 4) Robustez SSR
+- Se actualizó `src/server.ts` con:
+  - logging estructurado de arranque/error,
+  - middleware de error de Express para responder `500` controlado (`SSR_RENDER_ERROR`) cuando falla render.
+
+### 5) Consumo de error normalizado en presentación
+- `PostDetailFacade` ahora usa `ApiError` cuando está disponible para mostrar mensajes consistentes.
+
+### 6) Cobertura y tests de Semana 4
+- Nuevos tests:
+  - `src/app/core/errors/http-error.mapper.spec.ts`
+  - `src/app/core/errors/global-error-handler.service.spec.ts`
+  - `src/app/core/logging/logger.service.spec.ts`
+  - actualización de `src/app/core/interceptors/http-request.interceptor.spec.ts`
+  - actualización de `src/app/features/posts/presentation/post-detail.facade.spec.ts`
+
+## 2026-02-12 - Semana 5 (Gobernanza) - Avance paso 3
+
+### 1) Convencion de commits documentada
+- Se adopto el formato de **Conventional Commits**:
+  - `tipo(scope opcional): descripcion corta`
+- Se documentaron tipos recomendados:
+  - `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `ci`
+- Se agregaron ejemplos practicos en:
+  - `README.md`
+  - `document.md`
+
+### 2) Estado de Semana 5
+- Paso 1 (`PR template`): implementado.
+- Paso 2 (`CODEOWNERS`): implementado en modo preparado (sin enforcement).
+- Paso 3 (`commit conventions`): implementado.
+
+### 3) Paso 4 implementado: commitlint + hook commit-msg
+- Se instalaron dependencias:
+  - `@commitlint/cli`
+  - `@commitlint/config-conventional`
+- Se agregó configuración:
+  - `commitlint.config.cjs`
+- Se agregó hook de Husky:
+  - `.husky/commit-msg`
+- Resultado:
+  - mensajes de commit inválidos se bloquean automáticamente.
+
+### 4) Paso 2 incorporado en modo preparado: CODEOWNERS
+- Se agregó `.github/CODEOWNERS` con owners base por rutas.
+- Estado operativo:
+  - **no forzado** todavía (hasta activar branch protection con `Require review from Code Owners` en GitHub).
+
+## 2026-02-12 - Semana 6 (E2E con Playwright)
+
+### 1) Integración E2E completa
+- Se agregó Playwright:
+  - dependencia `@playwright/test`
+  - configuración `playwright.config.ts`
+  - suite base `e2e/app.e2e.spec.ts`
+
+### 2) Flujos E2E implementados
+- Home renderiza correctamente.
+- `/posts/1` renderiza datos con API mockeada.
+- `/posts/1` renderiza error normalizado ante respuesta `500`.
+
+### 3) Scripts E2E
+- Se agregaron en `package.json`:
+  - `e2e`
+  - `e2e:install`
+  - `e2e:ui`
+- Runner con flag de desactivación:
+  - `scripts/run-e2e.sh`
+
+### 4) CI E2E separado
+- Se agregó job `e2e` en `.github/workflows/ci.yml`:
+  - instala Chromium (`playwright install --with-deps chromium`)
+  - ejecuta `npm run e2e`
+  - publica artefacto `playwright-report`
+
+### 5) Desactivación/desacople de E2E
+- Local:
+  - `E2E_DISABLED=1 npm run e2e`
+- CI:
+  - variable `E2E_DISABLED=1` para omitir el job `e2e`.
+
+### 6) Aclaración de feature demo `posts`
+- Se documentó que `src/app/features/posts` es solo ejemplo de arquitectura hexagonal.
+- Se añadió checklist post-clone para eliminar la demo sin romper rutas/tests/CI.
+- Documentado en:
+  - `README.md`
+  - `document.md`
+
+## 2026-02-12 - Semana 7 (Performance y bundle control)
+
+### 1) Budgets endurecidos
+- Se ajustaron budgets en `angular.json`:
+  - `initial`: warning `350kB`, error `700kB`
+  - `anyComponentStyle`: warning `3kB`, error `6kB`
+
+### 2) Reporte de bundle
+- Se agregó script:
+  - `scripts/bundle-report.mjs`
+- Se agregaron scripts npm:
+  - `bundle:report`
+  - `bundle:report:build`
+- Se generan:
+  - `reports/bundle-summary.json`
+  - `reports/bundle-summary.md`
+
+### 3) Integración CI
+- En `.github/workflows/ci.yml`:
+  - step `Generate bundle report`
+  - artefacto `bundle-report`
+
+### 4) Gobernanza de PR para performance
+- Se actualizó `.github/PULL_REQUEST_TEMPLATE.md` con:
+  - campo `Impacto en performance/bundle`
+  - checklist para revisión/adjunto del reporte de bundle.
+
+## 2026-02-12 - Semana 8 (Seguridad y supply chain)
+
+### 1) Auditoría de vulnerabilidades
+- Se agregó script:
+  - `scripts/security-audit.sh`
+- Se agregó comando:
+  - `npm run security:audit`
+- Comportamiento:
+  - genera `reports/npm-audit.json`
+  - falla ante vulnerabilidades `high` o `critical`
+  - falla si no hay metadata de audit (evita falsos verdes por problemas de red)
+
+### 2) Escaneo de licencias
+- Se agregó dependencia:
+  - `license-checker`
+- Se agregó script:
+  - `scripts/security-licenses.sh`
+- Comando:
+  - `npm run security:licenses`
+- Salidas:
+  - `reports/licenses.json`
+  - `reports/licenses-summary.txt`
+
+### 3) Comando agregado de seguridad integral
+- Se agregó:
+  - `npm run security:check` (`audit + licenses`)
+
+### 4) CI de seguridad separado
+- Se agregó job `security` en `.github/workflows/ci.yml`:
+  - ejecuta `npm run security:check`
+  - publica artefacto `security-report`
+- Se agregó toggle de CI:
+  - `SECURITY_DISABLED=1` omite el job.
+
+### 5) Hardening SSR
+- Se actualizó `src/server.ts` con:
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY`
+  - `Referrer-Policy: no-referrer`
+  - `Permissions-Policy`
+  - `Content-Security-Policy` base
+  - `x-powered-by` deshabilitado
+
+### 6) Documentación
+- Actualizado:
+  - `README.md`
+  - `document.md`

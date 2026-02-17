@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-02-12T20:46:23.948Z",
+  "outputDir": "/Users/BASUH/Desktop/nxd-firstaid/dist/ndx-firstaid/browser",
+  "totals": {
+    "files": 8,
+    "bytes": 260904,
+    "kb": 254.79,
+    "jsBytes": 260904,
+    "jsKb": 254.79,
+    "cssBytes": 0,
+    "cssKb": 0,
+    "initialBytes": 257009,
+    "initialKb": 250.99,
+    "lazyBytes": 3895,
+    "lazyKb": 3.8
+  },
+  "largestFiles": [
+    {
+      "file": "chunk-TP2KER3X.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 252472,
+      "kb": 246.55
+    },
+    {
+      "file": "chunk-ZOUOBXUN.js",
+      "type": "js",
+      "bucket": "lazy",
+      "bytes": 3745,
+      "kb": 3.66
+    },
+    {
+      "file": "main-2GGBPOHJ.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 2311,
+      "kb": 2.26
+    },
+    {
+      "file": "chunk-JTUKP2JC.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 865,
+      "kb": 0.84
+    },
+    {
+      "file": "chunk-6VOGVWYG.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 743,
+      "kb": 0.73
+    },
+    {
+      "file": "chunk-7CGTOI24.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 618,
+      "kb": 0.6
+    },
+    {
+      "file": "chunk-JNEJYVYV.js",
+      "type": "js",
+      "bucket": "lazy",
+      "bytes": 150,
+      "kb": 0.15
+    },
+    {
+      "file": "styles-5INURTSO.css",
+      "type": "css",
+      "bucket": "initial",
+      "bytes": 0,
+      "kb": 0
+    }
+  ],
+  "files": [
+    {
+      "file": "chunk-TP2KER3X.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 252472,
+      "kb": 246.55
+    },
+    {
+      "file": "chunk-ZOUOBXUN.js",
+      "type": "js",
+      "bucket": "lazy",
+      "bytes": 3745,
+      "kb": 3.66
+    },
+    {
+      "file": "main-2GGBPOHJ.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 2311,
+      "kb": 2.26
+    },
+    {
+      "file": "chunk-JTUKP2JC.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 865,
+      "kb": 0.84
+    },
+    {
+      "file": "chunk-6VOGVWYG.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 743,
+      "kb": 0.73
+    },
+    {
+      "file": "chunk-7CGTOI24.js",
+      "type": "js",
+      "bucket": "initial",
+      "bytes": 618,
+      "kb": 0.6
+    },
+    {
+      "file": "chunk-JNEJYVYV.js",
+      "type": "js",
+      "bucket": "lazy",
+      "bytes": 150,
+      "kb": 0.15
+    },
+    {
+      "file": "styles-5INURTSO.css",
+      "type": "css",
+      "bucket": "initial",
+      "bytes": 0,
+      "kb": 0
+    }
+  ]
+}

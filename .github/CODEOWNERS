@@ -1,0 +1,18 @@
+# CODEOWNERS (base)
+#
+# Este archivo define dueños por rutas, pero NO se aplica hasta activar
+# branch protection con "Require review from Code Owners" en GitHub.
+#
+# Ajusta los owners a tus usuarios/equipos reales antes de activarlo.
+
+# Owner por defecto
+* @BASUH
+
+# Core architecture
+/src/app/core/ @BASUH
+
+# Features
+/src/app/features/ @BASUH
+
+# CI / repo governance
+/.github/ @BASUH

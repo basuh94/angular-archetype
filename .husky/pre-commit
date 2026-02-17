@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "▶ Formatting + linting staged files"
+npx lint-staged
+
+echo "▶ Running related tests"
+npm run test:related
