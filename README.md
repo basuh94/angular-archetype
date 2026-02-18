@@ -83,7 +83,7 @@ npm run e2e
 
 ## Estructura recomendada al crecer
 
-Cuando el proyecto crezca, se recomienda organizar `src/app/` así:
+Estructura base de `src/app/`:
 
 ```
 src/app/
@@ -93,7 +93,49 @@ src/app/
   layout/       # Páginas de estructura general (home/shell)
 ```
 
-No es obligatorio crear todas las carpetas desde el inicio; se pueden ir añadiendo según necesidad.
+No es obligatorio crear todas las carpetas desde el inicio; se pueden añadir según necesidad.
+
+## Estructura recomendada por feature
+
+Para features nuevas, el arquetipo recomienda organizar por **slice vertical** (feature-first) y no por capas globales.
+
+Comparativa rápida:
+
+- Feature-first (recomendado): cada feature encapsula `domain`, `application`, `infrastructure` y `presentation`; reduce acoplamiento entre features y facilita evolución independiente.
+- Capas globales (alternativa): agrupa por tipo técnico (`domain/`, `application/`, etc. a nivel raíz); puede servir en equipos pequeños al inicio, pero tiende a mezclar contextos de negocio y crecer con más fricción.
+
+Plantilla reutilizable por feature:
+
+```
+src/app/features/<feature-name>/
+  domain/
+    <feature>.model.ts
+    <feature>-repository.port.ts
+  application/
+    <use-case>.ts
+    <use-case>.spec.ts
+    <feature>-repository.token.ts
+  infrastructure/
+    <http-feature>.repository.ts
+    <feature>.dto.ts
+    <feature>.mapper.ts
+    <feature>.mapper.spec.ts
+  presentation/
+    <feature>.facade.ts
+    <feature>.facade.spec.ts
+    <feature>.page.ts
+    <feature>.page.html
+    <feature>.page.scss
+  <feature>.routes.ts
+```
+
+Guía práctica:
+
+1. Crear la carpeta de feature en `src/app/features/`.
+2. Definir primero `domain` y `application` (puertos + casos de uso).
+3. Implementar adaptadores en `infrastructure`.
+4. Exponer el flujo en `presentation` con facade y page.
+5. Registrar rutas lazy (`<feature>.routes.ts`) y conectar DI por tokens.
 
 ## Clean Architecture / Hexagonal (Frontend)
 
