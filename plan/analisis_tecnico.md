@@ -64,3 +64,45 @@ Pendiente de validacion humana.
 ## Estado de fase
 
 Pendiente de validacion humana.
+
+---
+
+## Solicitud 3: auditoria y mitigacion de vulnerabilidades
+
+## Alcance tecnico
+
+- Diagnostico de vulnerabilidades con `npm audit`.
+- Mitigacion controlada via `overrides` en `package.json`.
+- Regeneracion de lockfile.
+- Validacion de regresiones con `check`, `e2e` y `security:check`.
+
+## Diseno de la solucion
+
+1. Ejecutar `npm audit --json` con red para inventario real de CVEs.
+2. Aplicar `overrides` para dependencias transitorias con fix no disruptivo:
+   - `tar` (vulnerabilidad high),
+   - `qs` (vulnerabilidad low).
+3. Reinstalar dependencias para materializar overrides.
+4. Revalidar audit y ejecutar suites tecnicas.
+
+## Riesgos y mitigaciones
+
+- Riesgo: overrides no aplicados en `node_modules`.
+  - Mitigacion: ejecutar `npm install` y verificar arbol resuelto.
+- Riesgo: regresion funcional por cambios transitivos.
+  - Mitigacion: `npm run check` + `npm run e2e`.
+- Riesgo residual: vulnerabilidades moderadas en toolchain (eslint/angular builders) sin fix seguro inmediato.
+  - Mitigacion: documentar residual y planificar actualizacion mayor en ventana controlada.
+
+## Validacion tecnica ejecutada
+
+- `npm audit --json`:
+  - antes: 30 (1 high, 28 moderate, 1 low),
+  - despues: 28 (0 high, 28 moderate, 0 low).
+- `npm run check`: verde.
+- `npm run e2e`: verde.
+- `npm run security:check`: verde (high/critical = 0).
+
+## Estado de fase
+
+Pendiente de validacion humana.
