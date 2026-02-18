@@ -42,3 +42,25 @@ Reducir duplicacion documental y dejar una fuente canonica clara para mantenimie
 ## Estado de fase (solicitud 2)
 
 Pendiente de validacion humana.
+
+---
+
+## Solicitud 3
+
+Revisar vulnerabilidades de dependencias y confirmar que los cambios de mitigacion no rompen el arquetipo.
+
+## Objetivo funcional (solicitud 3)
+
+Reducir riesgo de seguridad en dependencias y validar estabilidad tecnica tras los ajustes.
+
+## Criterios de aceptacion (solicitud 3)
+
+1. Obtener reporte de vulnerabilidades con `npm audit`.
+2. Mitigar al menos vulnerabilidades de mayor severidad sin introducir regresiones.
+3. Validar integridad con `npm run check`.
+4. Validar impacto visible con `npm run e2e`.
+5. Confirmar estado de seguridad con `npm run security:check`.
+
+## Estado de fase (solicitud 3)
+
+Pendiente de validacion humana.
