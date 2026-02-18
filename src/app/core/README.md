@@ -1,3 +1,7 @@
 # Core
 
-Contiene piezas transversales de la app (interceptors, servicios globales, utilidades de infraestructura compartida).
+Piezas transversales de la app (interceptors, errores globales, logging y servicios comunes).
+
+Referencia canonica de arquitectura y guardrails:
+
+- `README.md`

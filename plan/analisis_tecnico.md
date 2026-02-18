@@ -29,3 +29,38 @@
 ## Estado de fase
 
 Pendiente de validacion humana.
+
+---
+
+## Solicitud 2: deduplicacion de documentacion
+
+## Alcance tecnico
+
+- Archivos objetivo:
+  - `document.md`
+  - `src/app/core/README.md`
+  - `src/app/layout/README.md`
+  - `src/app/shared/README.md`
+  - `src/app/features/README.md`
+- Sin impacto en runtime, build, contratos ni comportamiento de app.
+
+## Diseno de la solucion
+
+1. Transformar `document.md` en indice de navegacion (sin repetir contenido tecnico).
+2. Declarar `README.md` como fuente canonica.
+3. Mantener README locales con descripcion minima del modulo y referencia canonica.
+4. Evitar tablas/listas duplicadas ya presentes en `README.md`.
+
+## Riesgos y mitigaciones
+
+- Riesgo: perder contexto util en documentos secundarios.
+  - Mitigacion: conservar resumen breve por modulo + rutas claras al documento canonico.
+
+## Validacion tecnica prevista
+
+- Revision manual de duplicidad entre archivos documentales: completada.
+- No aplica `npm run check` ni `npm run e2e` por tratarse de cambio documental.
+
+## Estado de fase
+
+Pendiente de validacion humana.

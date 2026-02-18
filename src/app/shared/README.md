@@ -1,3 +1,7 @@
 # Shared
 
-Contiene componentes, pipes y directivas reutilizables entre features.
+Componentes, directivas y pipes reutilizables entre features.
+
+Referencia canonica de organizacion de `src/app`:
+
+- `README.md`
