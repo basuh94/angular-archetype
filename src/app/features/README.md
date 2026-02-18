@@ -1,18 +1,7 @@
 # Features
 
-Cada feature contiene su propio vertical slice:
+Cada feature sigue un vertical slice (feature-first) con capas `domain`, `application`, `infrastructure` y `presentation`.
 
-- `domain`: modelos y puertos (sin Angular/HTTP)
-- `application`: casos de uso
-- `infrastructure`: adaptadores concretos (HTTP, mapeos, DTOs)
-- `presentation`: facade + componentes/páginas
+Plantilla y comparativa oficial (feature-first vs capas globales):
 
-## Convención sugerida para nueva feature
-
-```text
-features/<feature-name>/
-  domain/
-  application/
-  infrastructure/
-  presentation/
-```
+- `README.md`
