@@ -64,3 +64,45 @@ Reducir riesgo de seguridad en dependencias y validar estabilidad tecnica tras l
 ## Estado de fase (solicitud 3)
 
 Pendiente de validacion humana.
+
+---
+
+## Solicitud 4
+
+Actualizar dependencias del arquetipo al estado mas reciente posible sin romper comportamiento ni calidad.
+
+## Objetivo funcional (solicitud 4)
+
+Reducir deuda de versionado y vulnerabilidades manteniendo estabilidad del arquetipo.
+
+## Criterios de aceptacion (solicitud 4)
+
+1. Actualizar stack principal (Angular y tooling asociado) a versiones compatibles actuales.
+2. Actualizar tooling de test/lint cuando sea compatible.
+3. Mantener `npm run check` en verde.
+4. Mantener `npm run e2e` en verde.
+5. Mantener `npm run security:check` sin high/critical.
+
+## Estado de fase (solicitud 4)
+
+Pendiente de validacion humana.
+
+---
+
+## Solicitud 5
+
+Revisar que la documentacion del arquetipo este actualizada tras los cambios de version y estado de CI.
+
+## Objetivo funcional (solicitud 5)
+
+Asegurar que `README.md` y documentacion relacionada reflejen el estado real del proyecto (versiones y capacidades operativas).
+
+## Criterios de aceptacion (solicitud 5)
+
+1. Version de Angular/CLI actualizada en `README.md`.
+2. Referencias a CI alineadas con `.github/workflows/ci.yml`.
+3. Sin contradicciones entre `README.md` y `package.json`.
+
+## Estado de fase (solicitud 5)
+
+Pendiente de validacion humana.
