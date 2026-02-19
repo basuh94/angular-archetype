@@ -32,6 +32,83 @@ Pendiente de validacion humana.
 
 ---
 
+## Solicitud 4: actualizacion integral de dependencias sin regresion
+
+## Alcance tecnico
+
+- Actualizacion mayor coordinada de:
+  - Angular (`@angular/*`, `@angular/cli`, `@angular/build`, `@angular/ssr`),
+  - Jest stack (`jest`, `jest-environment-jsdom`, `jest-preset-angular`, `@angular-builders/jest`),
+  - lint stack (`angular-eslint`, `typescript-eslint`).
+- Validacion completa de calidad, e2e y seguridad.
+
+## Diseno de la solucion
+
+1. Levantar inventario de versiones desactualizadas y peers.
+2. Ejecutar migraciones oficiales con `ng update` para Angular.
+3. Actualizar paquetes de test/lint a versiones compatibles con Angular objetivo.
+4. Reinstalar dependencias y resolver conflictos de peer si aparecen.
+5. Ejecutar `npm run check`, `npm run e2e` y `npm run security:check`.
+
+## Riesgos y mitigaciones
+
+- Riesgo: ruptura por salto major en Angular/Jest.
+  - Mitigacion: usar migraciones oficiales + validacion completa.
+- Riesgo: incompatibilidades de peer deps en lint/testing.
+  - Mitigacion: alinear versiones por matriz de peers antes de instalar.
+- Riesgo: cambios de config en tests.
+  - Mitigacion: ajustar configuracion minima y revalidar cobertura.
+
+## Estado de fase
+
+Pendiente de validacion humana.
+
+## Validacion tecnica ejecutada (solicitud 4)
+
+- `npm run check`: verde.
+- `npm run e2e`: verde.
+- `npm audit --omit=dev --json`: 0 vulnerabilidades (runtime/prod).
+- `npm run security:check`: falla por 41 vulnerabilidades high en devDependencies (tooling).
+
+## Bloqueo actual
+
+- Las vulnerabilidades high restantes provienen de toolchain (Jest/ESLint/Angular builders) tras upgrade major.
+- No existe correccion no-disruptiva via `npm audit fix` (solo propone downgrades/changes incompatibles).
+- Se requiere decision de politica de seguridad:
+  - mantener gate global (incluye dev deps) y no cerrar upgrade, o
+  - ajustar gate para produccion (`npm audit --omit=dev`) con aprobacion explicita.
+
+---
+
+## Solicitud 5: alineacion documental post-upgrade
+
+## Alcance tecnico
+
+- Verificacion de consistencia entre:
+  - `README.md`,
+  - `package.json`,
+  - `.github/workflows/ci.yml`,
+  - `document.md`.
+
+## Diseno de la solucion
+
+1. Buscar referencias de versiones antiguas (Angular 20/CLI 20.x).
+2. Corregir secciones de `README.md` para Angular 21.
+3. Corregir afirmaciones de CI que no aplican al workflow actual (E2E/security/bundle como jobs por defecto).
+4. Mantener `document.md` como indice sin duplicacion.
+
+## Validacion tecnica ejecutada
+
+- Verificacion por grep de referencias obsoletas: completada.
+- Alineacion de `README.md` con `package.json` y `ci.yml`: completada.
+- No aplica `npm run check` por ser cambio documental.
+
+## Estado de fase
+
+Pendiente de validacion humana.
+
+---
+
 ## Solicitud 2: deduplicacion de documentacion
 
 ## Alcance tecnico

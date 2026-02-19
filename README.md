@@ -1,10 +1,10 @@
 # angular-archetype
 
-Arquetipo Angular para arrancar nuevos desarrollos. Generado con [Angular CLI](https://github.com/angular/angular-cli) 20.3.x.
+Arquetipo Angular para arrancar nuevos desarrollos. Generado con [Angular CLI](https://github.com/angular/angular-cli) 21.1.x.
 
 ## Qué incluye este arquetipo
 
-- **Angular 20** con standalone, signals y control flow moderno (`@if`, `@for`, `@switch`)
+- **Angular 21** con standalone, signals y control flow moderno (`@if`, `@for`, `@switch`)
 - **SSR** con Express y hydration (event replay)
 - **Jest** para pruebas unitarias (en lugar de Karma)
 - **ESLint** + **Prettier** (angular-eslint, TypeScript, accesibilidad en templates)
@@ -12,7 +12,7 @@ Arquetipo Angular para arrancar nuevos desarrollos. Generado con [Angular CLI](h
 - **Interceptor HTTP global** para trazabilidad básica de peticiones
 - **Manejo global de errores** (cliente + SSR) con logging estructurado
 - **Ejemplo Clean Architecture / Hexagonal (frontend)** con feature `posts`
-- **Playwright E2E** con suite base y job dedicado en CI
+- **Playwright E2E** con suite base para validación end-to-end
 - **Convenciones** en `.cursor/rules`: OnPush, signals, `inject()`, reactive forms, etc.
 
 ## Desarrollo
@@ -213,7 +213,7 @@ Se usa **Jest** con `jest-preset-angular` y umbral de cobertura global mínimo d
 - El alcance actual de cobertura está orientado al código de aplicación (`src/app/**/*.ts`) y excluye archivos boilerplate de configuración/rutas.
 - El workflow de CI ejecuta `npm run check` (lint + tests con cobertura + build).
 - El reporte de cobertura se publica como artefacto de GitHub Actions (`coverage-report`).
-- El workflow incluye job E2E separado (`playwright-report`) que puede desactivarse con `E2E_DISABLED=1`.
+- La suite E2E está disponible para ejecución local o para integrarla en CI según necesidades del proyecto.
 
 ## Guardrails de performance
 
@@ -223,7 +223,7 @@ Se usa **Jest** con `jest-preset-angular` y umbral de cobertura global mínimo d
 - Reporte de bundle:
   - `npm run bundle:report`
   - salida en `reports/bundle-summary.json` y `reports/bundle-summary.md`
-- CI publica artefacto `bundle-report` en cada ejecución de `validate`.
+- El reporte puede publicarse como artefacto de CI si se agrega un paso dedicado en el workflow.
 
 ## Observabilidad y errores
 
@@ -284,8 +284,8 @@ Desacoplar / desactivar E2E temporalmente:
 - Local:
   - `E2E_DISABLED=1 npm run e2e`
 - CI:
-  - define variable de repositorio `E2E_DISABLED=1` en GitHub Actions.
-  - el job `e2e` se salta automáticamente.
+  - por defecto el workflow actual no ejecuta E2E automáticamente.
+  - puedes agregar un job `e2e` dedicado y usar `E2E_DISABLED=1` como toggle.
 
 ## Seguridad y supply chain
 
@@ -303,11 +303,10 @@ Incluye controles automáticos:
 
 CI:
 
-- job `security` dedicado en GitHub Actions:
-  - corre auditoría + licencias
-  - publica artefacto `security-report`
+- por defecto el workflow actual no ejecuta `security:check`.
+- puedes agregar un job `security` dedicado para correr auditoría + licencias y publicar artefactos.
 
-Desactivar temporalmente el job `security` en CI:
+Desactivar temporalmente el job `security` en CI (si lo implementas):
 
 - define variable de repositorio `SECURITY_DISABLED=1`
 
